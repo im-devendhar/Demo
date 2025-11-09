@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         // Remote Apache server details
-        APP_SERVER = 'ubuntu@3.84.242.242'
-        APP_SERVER_PATH = '/var/www/html/main'
-        SSH_KEY_CREDENTIALS = 'apache-ssh-key'
+        APP_SERVER = 'ubuntu@3.84.242.242'   // Replace with your Apache server IP
+        APP_SERVER_PATH = '/var/www/html/main' // Path on Apache server for deployment
+        SSH_KEY_CREDENTIALS = 'apache-ssh-key' // Jenkins stored private key credential ID
 
         // Optional for code quality and signing
         // SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins global config name
@@ -44,13 +44,12 @@ pipeline {
                 sudo apt-get update -y
                 sudo apt-get install -y clamav
                 sudo freshclam
-
                 clamscan -r . > scan_result.txt || true
 
                 if grep -q "Infected files: 0" scan_result.txt; then
                     echo "No malware found in the project files."
                 else
-                    echo "Malware detected! Please review scan_result.txt for details."
+                    echo "Malware detected! Check scan_result.txt"
                     exit 1
                 fi
                 '''
@@ -72,7 +71,7 @@ pipeline {
                 if grep -q "Total:" trivy_result.txt; then
                     echo "Trivy scan completed successfully."
                 else
-                    echo "Vulnerabilities found or scan failed! Check trivy_result.txt for details."
+                    echo "Vulnerabilities found or scan failed! Check trivy_result.txt"
                     exit 1
                 fi
                 '''
@@ -93,7 +92,7 @@ pipeline {
                     if grep -q "EXECUTION SUCCESS" sonar_result.txt; then
                         echo "SonarQube analysis completed successfully."
                     else
-                        echo "SonarQube analysis failed or issues found! Check sonar_result.txt."
+                        echo "SonarQube analysis failed! Check sonar_result.txt"
                         exit 1
                     fi
                     '''
