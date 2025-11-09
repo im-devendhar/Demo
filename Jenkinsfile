@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         // Remote Apache server details
-        APP_SERVER = 'ubuntu@<Apache_Server_IP>'   // Replace with your Apache server username and IP
-        APP_SERVER_PATH = '/var/www/html/main'     // Path on Apache server where app will be deployed
-        SSH_KEY_CREDENTIALS = 'apache-ssh-key'     // Jenkins stored private key credential ID
+        APP_SERVER = 'ubuntu@3.84.242.242'
+        APP_SERVER_PATH = '/var/www/html/main'
+        SSH_KEY_CREDENTIALS = 'apache-ssh-key'
 
         // Optional for code quality and signing
         // SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins global config name
