@@ -119,8 +119,8 @@ pipeline {
             steps {
                 echo "Deploying HTML app to Apache..."
                 sh '''
-                sudo mkdir -p /var/www/html/main
-                sudo cp index.html /var/www/html/main/index.html
+                mkdir -p /var/www/html/main
+                cp index.html /var/www/html/main/index.html
                 echo "Deployment completed successfully!"
                 '''
             }
