@@ -209,7 +209,7 @@ Optional for scans:
 **Check deployment:**
 
 ```bash
-http://<Apache_Server_IP>/main/index.html
+http://<Apache_Server_IP>/main/
 ```
 
 You should see your HTML app live.
