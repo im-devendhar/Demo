@@ -1,12 +1,12 @@
 pipeline {
     agent any
 
-    environment {
+   // environment {
         // SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins global config name
         // SONARQUBE_PROJECT_KEY = 'html-app'
         // SIGNING_KEY = credentials('gpg-signing-key')       // Add in Jenkins Credentials (Secret file)
         // SIGNING_PASSPHRASE = credentials('gpg-passphrase') // Add passphrase as Secret Text
-    }
+    //}
 
     stages {
         stage('Checkout') {
