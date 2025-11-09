@@ -2,8 +2,10 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'SonarQubeServer'   // Name configured in Jenkins > Manage Jenkins > System
+        SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins global config name
         SONARQUBE_PROJECT_KEY = 'html-app'
+        SIGNING_KEY = credentials('gpg-signing-key')       // Add in Jenkins Credentials (Secret file)
+        SIGNING_PASSPHRASE = credentials('gpg-passphrase') // Add passphrase as Secret Text
     }
 
     stages {
@@ -92,13 +94,38 @@ pipeline {
             }
         }
 
+        stage('Code Signing') {
+            steps {
+                echo "🔐 Signing HTML build files..."
+                sh '''
+                # Install GPG if missing
+                if ! command -v gpg &> /dev/null; then
+                    sudo apt-get install -y gnupg
+                fi
+
+                # Import signing key from Jenkins secret
+                echo "$SIGNING_KEY" > signing_key.asc
+                gpg --batch --yes --import signing_key.asc
+
+                # Create a ZIP of your build
+                zip -r html_build.zip index.html *.css *.js || echo "No extra files found."
+
+                # Sign the ZIP
+                echo "$SIGNING_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback \
+                    --passphrase-fd 0 --output html_build.zip.sig --detach-sign html_build.zip
+
+                echo "✅ Code signing completed. Signature file: html_build.zip.sig"
+                '''
+            }
+        }
+
         stage('Deploy to Apache') {
             steps {
-                echo "Deploying HTML app to Apache..."
+                echo "🚀 Deploying HTML app to Apache..."
                 sh '''
                 sudo mkdir -p /var/www/html/main
                 sudo cp index.html /var/www/html/main/index.html
-                echo "Deployment completed successfully!"
+                echo "✅ Deployment completed successfully!"
                 '''
             }
         }
@@ -106,10 +133,10 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline completed successfully — all scans and deployment done!"
+            echo "🎉 Pipeline completed successfully — all scans, signing, and deployment done!"
         }
         failure {
-            echo "Pipeline failed — check logs for details."
+            echo "❌ Pipeline failed — check logs for details."
         }
     }
 }
