@@ -26,7 +26,7 @@ This guide explains how to deploy an HTML application using Jenkins on one Ubunt
 
    ```bash
    sudo apt update -y
-   sudo apt install openjdk-11-jdk -y
+   sudo apt install openjdk-17-jdk -y
    java -version
    ```
 
