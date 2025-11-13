@@ -73,10 +73,52 @@ sudo systemctl enable jenkins
 
    * Go to `http://<Jenkins_Server_IP>:8080`
    
+## **Step 5: Install Required Jenkins Plugins**
+
+Minimum plugins for this pipeline:
+
+* **Pipeline** (core)
+* **Pipeline: Nodes and Processes**
+* **SSH Agent Plugin**
+* **Credentials Plugin**
+* **Git Plugin**
+
+Optional for scans:
+
+* **SonarQube Scanner**
+* **HTML Publisher**
+* **Pipeline Utility Steps**
 
 ---
+---
 
-## **Step 3: Set Up SSH Key-Based Authentication**
+
+## **Step 6: Set Up Apache on Application Server**
+
+1. **Install Apache**
+
+   ```bash
+   sudo apt update -y
+   sudo apt install apache2 -y
+   ```
+
+2. **Optionally, give Jenkins user permission to write**
+
+   ```bash
+   sudo chown -R ubuntu:ubuntu /var/www/html
+   chmod -R 755 /var/www/html
+   ```
+
+3. **Verify Apache is running**
+
+   ```bash
+   systemctl status apache2
+   ```
+
+   * Visit `http://<Apache_Server_IP>` to see the default Apache page.
+
+---
+## **Step 7: Set Up SSH Key-Based Authentication**
 
 **Goal:** Jenkins server should connect to Apache server without a password.
 
@@ -106,33 +148,7 @@ sudo systemctl enable jenkins
 
 ---
 
-## **Step 4: Set Up Apache on Application Server**
-
-1. **Install Apache**
-
-   ```bash
-   sudo apt update -y
-   sudo apt install apache2 -y
-   ```
-
-2. **Optionally, give Jenkins user permission to write**
-
-   ```bash
-   sudo chown -R ubuntu:ubuntu /var/www/html
-   chmod -R 755 /var/www/html
-   ```
-
-3. **Verify Apache is running**
-
-   ```bash
-   systemctl status apache2
-   ```
-
-   * Visit `http://<Apache_Server_IP>` to see the default Apache page.
-
----
-
-## **Step 5: Add SSH Key to Jenkins Credentials**
+## **Step 8: Add SSH Key to Jenkins Credentials**
 
 1. Go to **Jenkins → Manage Jenkins → Credentials → Global → Add Credentials**
 2. Select: **SSH Username with private key**
@@ -145,9 +161,9 @@ sudo systemctl enable jenkins
 
 ---
 
-## **Step 6: Prepare Jenkins Pipeline (Jenkinsfile)**
+## **Step 9: Prepare Jenkins Pipeline (Jenkinsfile)**
 
-**Example Jenkinsfile:**
+**Jenkinsfile:**
 
 ```groovy
 pipeline {
@@ -210,25 +226,9 @@ pipeline {
 
 ---
 
-## **Step 7: Install Required Jenkins Plugins**
 
-Minimum plugins for this pipeline:
 
-* **Pipeline** (core)
-* **Pipeline: Nodes and Processes**
-* **SSH Agent Plugin**
-* **Credentials Plugin**
-* **Git Plugin**
-
-Optional for scans:
-
-* **SonarQube Scanner**
-* **HTML Publisher**
-* **Pipeline Utility Steps**
-
----
-
-## **Step 8: Run the Pipeline**
+## **Step 10: Run the Pipeline**
 
 1. Create a **New Pipeline** in Jenkins.
 2. Connect it to your GitHub repository with the `Jenkinsfile`.
@@ -244,7 +244,7 @@ You should see your HTML app live.
 
 ---
 
-## **Step 9: Optional — Additional Features**
+## **Step 11: Optional — Additional Features**
 
 * **Malware Scan:** Use ClamAV (commented in Jenkinsfile).
 * **Trivy Scan:** Container vulnerability check (commented in Jenkinsfile).
@@ -255,7 +255,7 @@ You can uncomment these stages later when you want to add security and code qual
 
 ---
 
-✅ **Congratulations!** Your HTML app should now be deployed automatically via Jenkins to your Apache server.
+**HTML app should now be deployed automatically via Jenkins to your Apache server.**
 
 ---
 
