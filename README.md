@@ -19,7 +19,7 @@
 
 ---
 
-### Jenkins and Java Installation Guide (Ubuntu 24.04 Noble)
+### Jenkins and Java Installation 
 
 
 ---
