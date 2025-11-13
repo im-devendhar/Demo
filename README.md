@@ -20,26 +20,56 @@ This guide explains how to deploy an HTML application using Jenkins on one Ubunt
 
 ---
 
-## **Step 2: Set Up Jenkins Server**
+### Jenkins and Java Installation Guide (Ubuntu 24.04 Noble)
 
-1. **Install Java** (required by Jenkins):
+This guide walks you through installing **OpenJDK 17** and **Jenkins** on Ubuntu 24.04, including fixing GPG key issues and enabling the Jenkins service.
 
-   ```bash
-   sudo apt update -y
-   sudo apt install openjdk-17-jdk -y
-   java -version
-   ```
+---
 
-2. **Install Jenkins**
+### Step 1: Install Java (OpenJDK 17)
 
-   ```bash
-   wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc
-   echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
-   sudo apt update -y
-   sudo apt install jenkins -y
-   sudo systemctl start jenkins
-   sudo systemctl enable jenkins
-   ```
+Jenkins requires Java to run. Install OpenJDK 17:
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jre -y
+java --version
+```
+
+---
+
+### Step 2: Add Jenkins Repository and GPG Key
+
+Fix the GPG key issue and add the Jenkins repository:
+
+```bash
+# Download the updated Jenkins GPG key
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+# Add Jenkins repository
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+```
+
+---
+
+### Step 3: Install Jenkins
+
+```bash
+sudo apt update
+sudo apt install jenkins -y
+```
+
+---
+
+###  Step 4: Start and Enable Jenkins Service
+
+```bash
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+```
+
+---
 
 3. **Open Jenkins**
 
