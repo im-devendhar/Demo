@@ -2,7 +2,6 @@
 
 # **HTML App Deployment Using Jenkins and Apache on Ubuntu**
 
-This guide explains how to deploy an HTML application using Jenkins on one Ubuntu server and Apache on another Ubuntu server.
 
 ---
 
@@ -74,7 +73,7 @@ sudo systemctl enable jenkins
 3. **Open Jenkins**
 
    * Go to `http://<Jenkins_Server_IP>:8080`
-   * Follow the instructions to unlock Jenkins and install recommended plugins.
+   
 
 ---
 
