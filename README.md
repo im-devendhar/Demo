@@ -21,7 +21,6 @@
 
 ### Jenkins and Java Installation Guide (Ubuntu 24.04 Noble)
 
-This guide walks you through installing **OpenJDK 17** and **Jenkins** on Ubuntu 24.04, including fixing GPG key issues and enabling the Jenkins service.
 
 ---
 
