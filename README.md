@@ -122,31 +122,59 @@ Optional for scans:
 
 **Goal:** Jenkins server should connect to Apache server without a password.
 
-1. **Generate SSH key on Jenkins server:**
+### **1. Generate SSH Key on Jenkins Server**
 
-   ```bash
-   ssh-keygen -t rsa -b 4096 -C "jenkins" -f ~/.ssh/id_rsa
-   ```
+Run this command on the Jenkins server:
 
-   * Press Enter for no passphrase.
+```bash
+ssh-keygen -t rsa -b 4096 -C "jenkins" -f ~/.ssh/id_rsa
+```
 
-2. **Copy public key to Apache server:**
+*   **`-t rsa`**: Use RSA algorithm.
+*   **`-b 4096`**: Key length (4096 bits for strong security).
+*   **`-C "jenkins"`**: Adds a comment for identification.
+*   **`-f ~/.ssh/id_rsa`**: Saves private key as `id_rsa` and public key as `id_rsa.pub`.
 
-   ```bash
-   ssh ubuntu@<Apache_Server_IP> "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
-   cat ~/.ssh/id_rsa.pub | ssh ubuntu@<Apache_Server_IP> 'cat >> ~/.ssh/authorized_keys'
-   ssh ubuntu@<Apache_Server_IP> "chmod 600 ~/.ssh/authorized_keys"
-   ```
+ **Press Enter for no passphrase** (important for automation).
 
-3. **Test passwordless SSH**
+***
 
-   ```bash
-   ssh ubuntu@<Apache_Server_IP>
-   ```
+### **2. Copy Public Key to Apache Server**
 
-   * You should be logged in without entering a password.
+Run these commands from the Jenkins server:
 
----
+**Create `.ssh` directory on Apache server:**
+
+```bash
+ssh ubuntu@<Apache_Server_IP> "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+```
+
+**Append Jenkins public key to `authorized_keys`:**
+
+```bash
+cat ~/.ssh/id_rsa.pub | ssh ubuntu@<Apache_Server_IP> 'cat >> ~/.ssh/authorized_keys'
+```
+
+**Set correct permissions:**
+
+```bash
+ssh ubuntu@<Apache_Server_IP> "chmod 600 ~/.ssh/authorized_keys"
+```
+
+***
+
+### **3. Test Passwordless SSH**
+
+```bash
+ssh ubuntu@<Apache_Server_IP>
+```
+
+If successful, you’ll log in **without entering a password**.
+
+***
+
+
+
 
 ## **Step 8: Add SSH Key to Jenkins Credentials**
 
