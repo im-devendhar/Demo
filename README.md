@@ -122,9 +122,10 @@ Optional for scans:
 
 **Goal:** Jenkins server should connect to Apache server without a password.
 
-### **1. Generate SSH Key on Jenkins Server**
 
-Run this command on the Jenkins server:
+## **1. Generate SSH Key on Jenkins Server**
+
+Run the following command on the Jenkins server:
 
 ```bash
 ssh-keygen -t rsa -b 4096 -C "jenkins" -f ~/.ssh/id_rsa
@@ -135,41 +136,71 @@ ssh-keygen -t rsa -b 4096 -C "jenkins" -f ~/.ssh/id_rsa
 *   **`-C "jenkins"`**: Adds a comment for identification.
 *   **`-f ~/.ssh/id_rsa`**: Saves private key as `id_rsa` and public key as `id_rsa.pub`.
 
- **Press Enter for no passphrase** (important for automation).
+👉 **Press Enter for no passphrase** (important for automation).
 
 ***
 
-### **2. Copy Public Key to Apache Server**
+## **2. Copy Public Key to Apache Server**
 
-Run these commands from the Jenkins server:
+### **On Jenkins Server**
 
-**Create `.ssh` directory on Apache server:**
+Display the public key:
 
 ```bash
-ssh ubuntu@<Apache_Server_IP> "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+cat ~/.ssh/id_rsa.pub
 ```
 
-**Append Jenkins public key to `authorized_keys`:**
+Copy the entire output (starts with `ssh-rsa`).
+
+### **On Apache Server**
+
+Login using your `.pem` key from local machine:
 
 ```bash
-cat ~/.ssh/id_rsa.pub | ssh ubuntu@<Apache_Server_IP> 'cat >> ~/.ssh/authorized_keys'
+ssh -i your-key.pem ubuntu@<Apache_Server_IP>
 ```
 
-**Set correct permissions:**
+Create `.ssh` directory and set permissions:
 
 ```bash
-ssh ubuntu@<Apache_Server_IP> "chmod 600 ~/.ssh/authorized_keys"
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+```
+
+Edit `authorized_keys` file:
+
+```bash
+vim ~/.ssh/authorized_keys
+```
+
+Paste the Jenkins public key, then save and exit (`:wq`).
+
+Set correct permissions:
+
+```bash
+chmod 600 ~/.ssh/authorized_keys
 ```
 
 ***
 
-### **3. Test Passwordless SSH**
+## **3. Test Passwordless SSH**
+
+From Jenkins server:
 
 ```bash
 ssh ubuntu@<Apache_Server_IP>
 ```
 
-If successful, you’ll log in **without entering a password**.
+✅ If successful, you’ll log in **without entering a password**.
+
+***
+
+### **Why This Matters**
+
+Passwordless SSH is essential for Jenkins automation because it allows secure deployments without manual intervention.
+
+***
+
+
 
 ***
 
