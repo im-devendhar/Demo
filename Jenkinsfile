@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Remote Apache server details
-        APP_SERVER = 'ubuntu@35.172.150.147'   // Replace with your Apache server IP
+        APP_SERVER = 'ubuntu@3.238.106.75'   // Replace with your Apache server IP
         APP_SERVER_PATH = '/var/www/html/main' // Path on Apache server for deployment
         SSH_KEY_CREDENTIALS = 'apache-ssh-key' // Jenkins stored private key credential ID
 
